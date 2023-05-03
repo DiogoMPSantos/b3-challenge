@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\Return_;
 
 class B3Controller extends Controller
 {
@@ -11,39 +12,14 @@ class B3Controller extends Controller
      */
     public function index()
     {
-        return 'hello';
+        return 'chart aqui';
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+     * Import B3 Posições em Aberto de Empréstimo into database.
+    */
+    public function import()
+    {        
+        return 'opa aqui vai importar depois';
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
-    
 }
