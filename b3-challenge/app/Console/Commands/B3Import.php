@@ -12,7 +12,7 @@ class B3Import extends Command
      *
      * @var string
      */
-    protected $signature = 'b3-import';
+    protected $signature = 'b3:import {data=*latest}';
 
     /**
      * The console command description.
@@ -26,7 +26,8 @@ class B3Import extends Command
      */
     public function handle()
     {
+        $data = $this->argument('data');
         $b3 = new B3Controller();
-        $this->info($b3->import());
+        $this->info($b3->import($data));
     }
 }

@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('isin');
             $table->string('asst');
             $table->integer('balqty');
-            $table->float('tradavrgpric');
+            $table->double('tradavrgpric');
             $table->integer('pricfctr');
-            $table->float('balval');
+            $table->double('balval');
             $table->timestamps();
         });
     }
