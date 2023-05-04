@@ -1,21 +1,16 @@
 #!/bin/bash
 
-# Adiconar enviroment file
+# Adicionar enviroment file
    cd /var/www/html && cp .env.example .env \
-# Gerar chave da aplicação
-   cd /var/www/html && php artisan key:generate \
 
 # Rodar link da pasta storage e adicionar permissoes
    cd /var/www/html && php artisan storage:link && chmod -R 777 /var/www/html/storage  \
    
-# Rodar migrations no banco
-   cd /var/www/html && php artisan migrate:fresh --seed \
+# Setup Node e PHP
+   cd /var/www/html && rm -r node_modules/ \
+
+# Setup Node e PHP
+   cd /var/www/html && php artisan key:generate && php artisan migrate:fresh --seed && composer install && composer update && npm install && npm update \
 
 # Popular banco com os primeiros 100 registros
-   # cd /var/www/html && php artisan b3:import
-
-# Rodar PHPunit
-   # cd /var/www/html && php artisan test
-
-# Start crontab
-   # crond
+   cd /var/www/html && php artisan b3:import 2023-04-03 2023-04-04 2023-04-05 2023-04-06 2023-04-10

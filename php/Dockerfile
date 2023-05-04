@@ -11,4 +11,10 @@ COPY ./b3-challenge/ /var/www/html/
 COPY php/setup.sh /bin/scripts/setup.sh
 RUN chmod +x /bin/scripts/setup.sh
 
-RUN echo "* * * * * cd /var/www/html/ && php artisan schedule:run" >> /var/spool/cron/crontabs/root
+# Get latest Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+## NodeJS, NPM
+# Installing NodeJ
+RUN apk add nodejs-current npm
+
