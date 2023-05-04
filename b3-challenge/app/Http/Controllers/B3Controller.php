@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\B3;
+use App\Jobs\ProccessB3;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -71,42 +71,8 @@ class B3Controller extends Controller
                         return $e->getMessage();
                     }
                 }
-    
-                $path = Storage::disk('public')->path("data/{$response->file->name}.csv");
-                $file = fopen($path, "r");
-    
-                $first_row = true;
-                
-                while (!feof($file)) {
-                    $row = fgetcsv($file, 0, ";");
-    
-                    if($first_row) { 
-                        $first_row = false; 
-                        continue; 
-                    }
-    
-                    if ($row) {    
-                        try {
-                            B3::create([
-                                "rpttd" => Carbon::parse($row[0]),
-                                "tckrsymb" => $row[1],
-                                "isin" => $row[2],
-                                "asst" => $row[3],
-                                "balqty" => intval($row[4]),
-                                "tradavrgpric" => floatval($row[5]),
-                                "pricfctr" => intval($row[6]),
-                                "balval" => floatval($row[7]),
-                            ]);                                        
-                        } catch (\Exception $e) {
-                            return 'Erro na inserção da linha '.$e->getMessage();
-                        }
-                    }
-                }   
-    
-                //Remove o arquivo apos inserir as linhas
-                if (Storage::disk('public')->exists("data/{$response->file->name}.csv")) {
-                    Storage::disk('public')->delete("data/{$response->file->name}.csv");
-                }
+                //Add File to queue
+                dispatch(new ProccessB3($response->file->name));
             } catch (Exception $e) {
                 return 'Erro na request ou o arquivo ainda não existe '.$e->getMessage();
             }

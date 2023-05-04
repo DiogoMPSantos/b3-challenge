@@ -19,7 +19,9 @@ B3 Challenge é um desafio de exibição de dados de ativos da [B3](https://www.
  ### Executar setup do projeto (obs: Aguardar containers serem startados)   
    - docker-compose exec php sh /bin/scripts/setup.sh <br />
  ## Import de Dados - Executa através de comando artisan para importar novas datas no banco exemplo abaixo, aceita varias datas separadas por espaço no formato abaixo
-    - docker-compose exec php php artisan b3:import YYYY-MM-DD
+   - docker-compose exec php php artisan b3:import YYYY-MM-D
+  # Processar Fila de arquivos
+   - docker-compose exec php php artisan queue:work --stop-when-empty
 
 # Instruções para uso em distribuições apache ou similares
 ## Rodar os comandos na pasta do projeto
@@ -34,4 +36,5 @@ B3 Challenge é um desafio de exibição de dados de ativos da [B3](https://www.
   - npm run build
   - npm run dev
   - php artisan serve   
+  - php artisan queue:work --stop-when-empty
   - Ajustar configurações no .env
