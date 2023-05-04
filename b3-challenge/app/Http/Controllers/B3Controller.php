@@ -52,7 +52,7 @@ class B3Controller extends Controller
     public function import($datas)
     {        
         if ($datas[0] == "latest") {
-            $datas = array(Carbon::now()->format('Y-m-d'));
+            $datas = array(Carbon::yesterday()->format('Y-m-d')); // Pego o ultimo porque o dia de hoje pode nao ter mais o de ontem geralmente ja tem o arquivo
         }
 
         foreach ($datas as $key => $data) {
