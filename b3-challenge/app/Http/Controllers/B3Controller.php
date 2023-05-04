@@ -5,16 +5,45 @@ namespace App\Http\Controllers;
 use App\Models\B3;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class B3Controller extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return 'chart aqui';
+        $ativos = DB::table('b3')
+            ->select('tckrsymb')
+            ->groupBy('tckrsymb')
+            ->get()
+            ->toArray();
+
+        $ativos = collect($ativos)->pluck('tckrsymb')->all();
+
+        $current_ativo = $request->input('ativo') ? $request->input('ativo') : "A1DM34"; //Default chart
+
+        $data_ativo = DB::table('b3')
+            ->select('rpttd', 'balqty', 'tradavrgpric')        
+            ->where('tckrsymb', $current_ativo)
+            ->get()
+            ->toArray();
+
+        $dataset_balqty = collect($data_ativo)->pluck('balqty')->all();
+        $dataset_tradavrgpric = collect($data_ativo)->pluck('tradavrgpric')->all();
+        $labels = collect($data_ativo)->sort()->pluck('rpttd')->all();
+
+        return Inertia::render('Dashboard/B3', [
+            'current_ativo' => $current_ativo,
+            'ativos' => $ativos,
+            'dataset_balqty' => $dataset_balqty,
+            'dataset_tradavrgpric' => $dataset_tradavrgpric,
+            'labels' => $labels,            
+        ]);
     }
 
     /**
